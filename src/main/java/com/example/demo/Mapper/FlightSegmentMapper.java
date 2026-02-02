@@ -1,33 +1,15 @@
 package com.example.demo.Mapper;
 
 import com.example.demo.DTO.Request.CreateFlightSegmentRequest;
-import com.example.demo.Model.entities.AirPort;
-import com.example.demo.Model.entities.Flight;
 import com.example.demo.Model.entities.FlightSegment;
+import org.mapstruct.*;
 
-public class FlightSegmentMapper {
+@Mapper(componentModel = "spring")
+public interface FlightSegmentMapper {
 
-    public static FlightSegment toEntity(CreateFlightSegmentRequest req) {
-        FlightSegment s = new FlightSegment();
-
-        // Flight relation (by id)
-        Flight f = new Flight();
-        f.setId(req.getFlightId());
-        s.setFlight(f);
-
-        // Airports relations (by id)
-        AirPort from = new AirPort();
-        from.setId(req.getFromAirportId());
-        s.setFromAirport(from);
-
-        AirPort to = new AirPort();
-        to.setId(req.getToAirportId());
-        s.setToAirport(to);
-
-        s.setSegmentNo(req.getSegmentNo());
-        s.setDepartureTime(req.getDepartureTime());
-        s.setArrivalTime(req.getArrivalTime());
-
-        return s;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "flight", ignore = true)
+    @Mapping(target = "fromAirport", ignore = true)
+    @Mapping(target = "toAirport", ignore = true)
+    FlightSegment toSegment(CreateFlightSegmentRequest req);
 }
