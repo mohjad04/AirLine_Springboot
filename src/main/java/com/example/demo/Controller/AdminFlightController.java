@@ -19,19 +19,18 @@ public class AdminFlightController {
 
     @PostMapping("/flights")
     public CreateFlightResponse createFlight(
-            @RequestHeader("Authorization") String auth,
             @RequestBody CreateFlightRequest req
     ) {
-        Long id = adminFlightService.createFlight(auth, req);
+        Long id = adminFlightService.createFlight(req);
         return new CreateFlightResponse(id);
     }
 
+
     @PostMapping("/flight-segments")
     public CreateFlightSegmentResponse createFlightSegment(
-            @RequestHeader("Authorization") String auth,
             @RequestBody CreateFlightSegmentRequest req
     ) {
-        Long id = adminFlightService.createFlightSegment(auth, req);
+        Long id = adminFlightService.createFlightSegment( req);
         return new CreateFlightSegmentResponse(id);
     }
 }

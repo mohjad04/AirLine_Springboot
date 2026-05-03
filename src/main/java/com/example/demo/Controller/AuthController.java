@@ -1,10 +1,7 @@
 package com.example.demo.Controller;
 
-
-
 import com.example.demo.DTO.Request.CreateCustomerRequest;
 import com.example.demo.DTO.Request.LoginRequest;
-import com.example.demo.DTO.Request.RegisterRequest;
 import com.example.demo.DTO.Response.LoginResponse;
 import com.example.demo.Service.AuthService;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +16,6 @@ public class AuthController {
         this.authService = authService;
     }
 
-
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest req) {
         return authService.login(req);
@@ -30,5 +26,4 @@ public class AuthController {
         authService.registerCustomer(req);
         return "Customer registered successfully";
     }
-
 }

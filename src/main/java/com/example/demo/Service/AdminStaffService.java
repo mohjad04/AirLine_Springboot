@@ -28,25 +28,33 @@ public class AdminStaffService {
     }
 
     @Transactional
-    public Long createStaff(String authorizationHeader, CreateStaffRequest req) {
-        adminAuthHelper.requireAdmin(authorizationHeader);
+    public Long createStaff( CreateStaffRequest req) {
 
+        // 1) authorization
+        adminAuthHelper.requireAdmin();
+
+        // 2) validations
         if (req.getEmail() == null || req.getPassword() == null)
             throw new RuntimeException("email and password required");
-        if (req.getRole() == null) throw new RuntimeException("role is required");
-        if (req.getEmployeeCode() == null) throw new RuntimeException("employeeCode is required");
+        if (req.getRole() == null)
+            throw new RuntimeException("role is required");
+        if (req.getEmployeeCode() == null)
+            throw new RuntimeException("employeeCode is required");
 
-        User existing = userRepository.findByEmail(req.getEmail());
-        if (existing != null) throw new RuntimeException("email already exists");
+        userRepository.findByEmail(req.getEmail())
+                .ifPresent(u -> {
+                    throw new RuntimeException("email already exists");
+                });
 
+        // 4) create user
         User user = adminStaffMapper.toUser(req);
-        user = userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
+        // 5) create staff (PK = user_id)
         Staff staff = adminStaffMapper.toStaff(req);
-        staff.setUserId(user.getId()); // PK of staff table
+        staff.setUserId(savedUser.getId());
         staffRepository.save(staff);
 
-        return user.getId();
+        return savedUser.getId();
     }
 }
-

@@ -20,7 +20,7 @@ public class AdminStaffController {
             @RequestHeader("Authorization") String authorization,
             @RequestBody CreateStaffRequest req
     ) {
-        Long id = adminStaffService.createStaff(authorization, req);
+        Long id = adminStaffService.createStaff( req);
         return new CreateStaffResponse(id, "Staff created");
     }
 }
